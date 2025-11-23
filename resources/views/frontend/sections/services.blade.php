@@ -1,0 +1,81 @@
+<!-- services -->
+<section class="mil-dark-bg">
+    <div class="mi-invert-fix">
+
+        <!-- animations -->
+        <div class="mil-animation-frame">
+            <div class="mil-animation mil-position-1 mil-scale" data-value-1="2.4" data-value-2="1.4" style="top: 300px; right: -100px"></div>
+            <div class="mil-animation mil-position-2 mil-scale" data-value-1="2" data-value-2="1" style="left: 150px"></div>
+        </div>
+
+        <div class="container mil-p-120-0">
+
+            <!-- Title + Button -->
+            <div class="mil-mb-120">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <span class="mil-suptitle mil-light-soft mil-suptitle-right mil-up">
+                            Professionals focused on helping your business grow and move forward.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mil-complex-text justify-content-center mil-up mil-mb-15">
+                    <span class="mil-text-image">
+                        <img src="{{ asset('assets/img/photo/2.jpg') }}" alt="team">
+                    </span>
+                    <h2 class="mil-h1 mil-muted mil-center">
+                        Unique <span class="mil-thin">Ideas</span>
+                    </h2>
+                </div>
+
+                <div class="mil-complex-text justify-content-center mil-up">
+                    <h2 class="mil-h1 mil-muted mil-center">
+                        For Your <span class="mil-thin">Business.</span>
+                    </h2>
+
+                    <a href="{{ route('services.index') }}"
+                       class="mil-services-button mil-button mil-arrow-place">
+                       <span>What We Do</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="row mil-services-grid m-0">
+
+                @foreach($services as $service)
+                    <div class="col-md-6 col-lg-3 mil-services-grid-item p-0">
+
+                        <a href="{{ route('services.show', $service->slug) }}"
+                           class="mil-service-card-sm mil-up">
+
+                            <!-- Title -->
+                            <h5 class="mil-muted mil-mb-30">
+                                {!! $service->name !!}
+                                <!-- @if($service->subServices->count() > 0)
+                                    <br>
+                                    <span class="mil-thin">
+                                        {{ $service->subServices->first()->name }}
+                                    </span>
+                                @endif -->
+                            </h5>
+
+                            <!-- Short description -->
+                            <p class="mil-light-soft mil-mb-30">
+                                {!! $service->short_description ?? 'Our creative team is ready to help your business grow.' !!}
+                            </p>
+
+                            <div class="mil-button mil-icon-button-sm mil-arrow-place"></div>
+                        </a>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- services end -->

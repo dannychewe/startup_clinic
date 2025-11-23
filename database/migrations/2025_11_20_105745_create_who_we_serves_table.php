@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('who_we_serves', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->longText('description')->nullable();
+
+            $table->string('image')->nullable();
+            $table->string('icon')->nullable();
+
+            $table->unsignedInteger('order')->default(0);
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('who_we_serves');
+    }
+};

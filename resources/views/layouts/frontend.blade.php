@@ -88,7 +88,7 @@
         <!-- frame -->
         <div class="mil-frame">
             <div class="mil-frame-top">
-                <a href="home-1.html" class="mil-logo">
+                <a href="{{ url('/') }}" class="mil-logo">
                     <img src="{{ asset('assets/img/logo.svg') }}" alt="Startup Clinic Logo">
                 </a>
                 <div class="mil-menu-btn">

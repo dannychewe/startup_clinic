@@ -22,7 +22,7 @@
                         <div class="swiper-slide">
                             <a href="{{ $client->website ?: '#.' }}" 
                                class="mil-partner-frame" 
-                               style="width: {{ $width }};">
+                               style="width: 100px;">
                                 <img src="{{ $logo }}" alt="{{ $client->company_name ?? $client->name }}">
                             </a>
                         </div>

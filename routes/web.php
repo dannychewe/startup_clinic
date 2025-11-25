@@ -179,3 +179,25 @@ Route::get('/sitemap.xml', function () {
         return response("Sitemap generation failed: " . $e->getMessage(), 500);
     }
 });
+
+
+Route::get('/debug-sitemap', function () {
+
+    try {
+
+        $base = rtrim(env('APP_URL'), '/');
+
+        // TEST database models
+        return [
+            'app_url' => $base,
+            'services_count' => \App\Models\Service::count(),
+            'projects_count' => \App\Models\Project::count(),
+            'blogs_count' => \App\Models\Blog::count(),
+            'who_we_serve_count' => \App\Models\WhoWeServe::count(),
+        ];
+
+    } catch (\Exception $e) {
+
+        return response("DEBUG ERROR: " . $e->getMessage(), 500);
+    }
+});

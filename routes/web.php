@@ -180,6 +180,72 @@ Route::get('/sitemap.xml', function () {
     }
 });
 
+Route::get('/sitemap-refresh', function () {
+
+    try {
+
+        $base = rtrim(config('app.url'), '/');
+
+        $sitemap = Sitemap::create();
+
+        // STATIC PAGES
+        $staticPages = [
+            '/',
+            '/about',
+            '/services',
+            '/projects',
+            '/blog',
+            '/contact',
+            '/who-we-serve',
+        ];
+
+        foreach ($staticPages as $page) {
+            $sitemap->add(Url::create($base . $page));
+        }
+
+        // SERVICES + SUBSERVICES
+        foreach (Service::with('subServices')->get() as $service) {
+            $sitemap->add(Url::create("$base/services/{$service->slug}"));
+            foreach ($service->subServices as $sub) {
+                $sitemap->add(Url::create("$base/services/{$service->slug}/{$sub->slug}"));
+            }
+        }
+
+        // PROJECTS
+        foreach (Project::all() as $project) {
+            $sitemap->add(Url::create("$base/projects/{$project->slug}"));
+        }
+
+        // BLOG POSTS
+        foreach (Blog::all() as $blog) {
+            $sitemap->add(Url::create("$base/blog/{$blog->slug}"));
+        }
+
+        // WHO WE SERVE
+        foreach (WhoWeServe::all() as $item) {
+            $sitemap->add(Url::create("$base/who-we-serve/{$item->slug}"));
+        }
+
+        // Write to storage temporarily
+        $tempPath = storage_path('app/sitemap-temp.xml');
+        $sitemap->writeToFile($tempPath);
+
+        // Move to public/sitemap.xml
+        copy($tempPath, public_path('sitemap.xml'));
+
+        return "Sitemap regenerated successfully.";
+
+    } catch (\Throwable $e) {
+
+        return response(
+            "ERROR generating sitemap:<br>" .
+            $e->getMessage() . "<br><br>" .
+            nl2br($e->getTraceAsString()),
+            500
+        );
+    }
+});
+
 
 Route::get('/debug-sitemap', function () {
 

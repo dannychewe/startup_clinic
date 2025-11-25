@@ -32,9 +32,18 @@
     <!-- ashley scss -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- page name -->
-    <title>Startup Clinic</title>
+
 
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NJ7QZW3BY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6NJ7QZW3BY');
+</script>
 
 <body>
 

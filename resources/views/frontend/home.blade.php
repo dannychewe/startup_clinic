@@ -23,11 +23,12 @@
     {{-- WHO WE SERVE SECTION --}}
     @include('frontend.sections.serve')
 
-    {{-- PARTNERS --}}
-    {{-- @include('frontend.sections.partners') --}}
 
     {{-- TESTIMONIALS / REVIEWS --}}
     @include('frontend.sections.reviews')
+
+    {{-- PARTNERS --}}
+    @include('frontend.sections.partners')
 
     {{-- TEAM SECTION --}}
     @include('frontend.sections.team')

@@ -149,15 +149,19 @@
 
                                     @if($linkedin)
                                         <li>
-                                            <a href="{{ $linkedin->url }}" target="_blank" class="social-icon">
+                                            <a href="{{ $linkedin->url }}" 
+                                            target="_blank" 
+                                            rel="noopener" data-no-swup
+                                            class="social-icon">
                                                 <i class="fab fa-linkedin"></i>
                                             </a>
+
                                         </li>
                                     @endif
 
                                     @if($facebook)
                                         <li>
-                                            <a href="{{ $facebook->url }}" target="_blank" class="social-icon">
+                                            <a href="{{ $facebook->url }}" target="_blank" rel="noopener" data-no-swup  class="social-icon">
                                                 <i class="fab fa-facebook"></i>
                                             </a>
                                         </li>
@@ -165,7 +169,7 @@
 
                                     @if($instagram)
                                         <li>
-                                            <a href="{{ $instagram->url }}" target="_blank" class="social-icon">
+                                            <a href="{{ $instagram->url }}" target="_blank" rel="noopener" data-no-swup  class="social-icon">
                                                 <i class="fab fa-instagram"></i>
                                             </a>
                                         </li>

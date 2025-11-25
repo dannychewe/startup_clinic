@@ -1,2 +1,31 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /filament/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+Disallow: /password/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /storage/
+Disallow: /vendor/
+Disallow: /search
+Disallow: /*?*        # block all query strings (prevents duplicate content)
+Disallow: /*&*
+
+# Allow important content
+Allow: /$
+Allow: /about
+Allow: /services
+Allow: /services/
+Allow: /projects
+Allow: /blog
+Allow: /page/
+Allow: /who-we-serve
+
+# Crawl Delay for slower bots
+Crawl-delay: 10
+
+# MAIN SITEMAP (dynamic)
+Sitemap: https://startupclinic.co.zm/sitemap.xml

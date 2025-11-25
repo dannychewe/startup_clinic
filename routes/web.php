@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Log;
 // Frontend Controllers
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
@@ -93,77 +93,89 @@ Route::post('/contact', [ContactController::class, 'submit'])->name('contact.sub
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
     ->name('newsletter.subscribe');
 
-
 Route::get('/sitemap.xml', function () {
 
-    $sitemap = Sitemap::create();
+    try {
 
-    // -------------------------
-    // STATIC PAGES
-    // -------------------------
-    $staticPages = [
-        url('/'),
-        url('/about'),
-        url('/services'),
-        url('/projects'),
-        url('/blog'),
-        url('/contact'),
-        url('/who-we-serve'),
-    ];
+        $base = rtrim(env('APP_URL'), '/'); // always correct for live domain
 
-    foreach ($staticPages as $page) {
-        $sitemap->add(Url::create($page));
-    }
+        $sitemap = Sitemap::create();
 
-    // -------------------------
-    // CMS PAGES
-    // /page/{slug}
-    // -------------------------
-    // foreach (Page::all() as $page) {
-    //     $sitemap->add(Url::create("/page/{$page->slug}"));
-    // }
+        // -------------------------
+        // STATIC PAGES
+        // -------------------------
+        $staticPages = [
+            '/',
+            '/about',
+            '/services',
+            '/projects',
+            '/blog',
+            '/contact',
+            '/who-we-serve',
+        ];
 
-    // -------------------------
-    // SERVICES
-    // /services/{slug}
-    // /services/{serviceSlug}/{subSlug}
-    // -------------------------
-    foreach (Service::all() as $service) {
-
-        // Service page
-        $sitemap->add(Url::create("/services/{$service->slug}"));
-
-        // Sub-services
-        foreach ($service->subServices as $sub) {
-            $sitemap->add(Url::create("/services/{$service->slug}/{$sub->slug}"));
+        foreach ($staticPages as $page) {
+            $sitemap->add(
+                Url::create($base . $page)
+            );
         }
+
+        // -------------------------
+        // SERVICES + SUBSERVICES
+        // -------------------------
+        foreach (Service::with('subServices')->get() as $service) {
+
+            $sitemap->add(
+                Url::create("$base/services/{$service->slug}")
+            );
+
+            foreach ($service->subServices as $sub) {
+                $sitemap->add(
+                    Url::create("$base/services/{$service->slug}/{$sub->slug}")
+                );
+            }
+        }
+
+        // -------------------------
+        // PROJECTS
+        // -------------------------
+        foreach (Project::all() as $project) {
+            $sitemap->add(
+                Url::create("$base/projects/{$project->slug}")
+            );
+        }
+
+        // -------------------------
+        // BLOG POSTS
+        // -------------------------
+        foreach (Blog::all() as $blog) {
+            $sitemap->add(
+                Url::create("$base/blog/{$blog->slug}")
+            );
+        }
+
+        // -------------------------
+        // WHO WE SERVE
+        // -------------------------
+        foreach (WhoWeServe::all() as $item) {
+            $sitemap->add(
+                Url::create("$base/who-we-serve/{$item->slug}")
+            );
+        }
+
+        // -------------------------
+        // WRITE FILE
+        // -------------------------
+        $path = public_path('sitemap.xml');
+        $sitemap->writeToFile($path);
+
+        return response()->file($path);
+
+    } catch (\Exception $e) {
+
+        // Log for debugging
+        Log::error('Sitemap generation error: ' . $e->getMessage());
+
+        return response("Sitemap generation failed: " . $e->getMessage(), 500);
     }
-
-    // -------------------------
-    // PROJECTS
-    // /projects/{slug}
-    // -------------------------
-    foreach (Project::all() as $project) {
-        $sitemap->add(Url::create("/projects/{$project->slug}"));
-    }
-
-    // -------------------------
-    // BLOG POSTS
-    // /blog/{slug}
-    // -------------------------
-    foreach (Blog::all() as $blog) {
-        $sitemap->add(Url::create("/blog/{$blog->slug}"));
-    }
-
-    // -------------------------
-    // WHO WE SERVE
-    // /who-we-serve/{slug}
-    // -------------------------
-    foreach (WhoWeServe::all() as $item) {
-        $sitemap->add(Url::create("/who-we-serve/{$item->slug}"));
-    }
-
-    $sitemap->writeToFile(public_path('sitemap.xml'));
-
-    return response()->file(public_path('sitemap.xml'));
 });

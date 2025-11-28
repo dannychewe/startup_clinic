@@ -174,7 +174,7 @@
         </div>
         <div class="mil-center">
             <h2 class="mil-up mil-mb-60">Let’s make an <span class="mil-thin">impact</span><br> together. Ready <span class="mil-thin">when you are</span></h2>
-            <div class="mil-up"><a href="contact.html" class="mil-button mil-arrow-place"><span>Contact us</span></a></div>
+            <div class="mil-up"><a href="{{ route('contact.index') }}" class="mil-button mil-arrow-place"><span>Contact us</span></a></div>
         </div>
     </div>
 </section>
